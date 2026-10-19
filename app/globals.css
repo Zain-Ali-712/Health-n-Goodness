@@ -1,0 +1,358 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+  Health n Goodness tokens.
+  - Brand green #007943 is sampled from the official HnG logo; it is the one accent.
+  - Page ground is a cool mint-white, not cream, so the fruit backdrops carry the warmth.
+  - Fruit tints are softened from the backdrops of the official product posters
+    (Squeeze the Day, White n Red Pomegranate, Mighty Charger). See research/research.md.
+  Shape rule: panels and cards 28px, images inside cards 20px, buttons and chips full pill, inputs 14px.
+*/
+:root {
+  color-scheme: light;
+
+  --ground: #f3f6ef;
+  --surface: #fbfcf8;
+  --ink: #11291c;
+  --ink-soft: #3c5246;
+  --muted-ink: #536559;
+  --line: #d3dccd;
+  --green: #007943;
+  --green-deep: #0a5232;
+  --green-soft: #dcead6;
+  --sun: #f1d54a; /* the yellow "n" in the logo; used only inside the logo mark */
+
+  --tint-musami: #e4e9cf;
+  --tint-pomegranate: #f3e7e1;
+  --tint-mighty: #fbdfd3;
+
+  --background: var(--ground);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary: var(--green);
+  --primary-foreground: #fbfcf8;
+  --secondary: var(--green-soft);
+  --secondary-foreground: var(--ink);
+  --muted: #e7ece2;
+  --muted-foreground: var(--muted-ink);
+  --accent: var(--green-soft);
+  --accent-foreground: var(--ink);
+  --destructive: #b3261e;
+  --border: var(--line);
+  --input: #b9c5b2;
+  --ring: var(--green);
+  --radius: 1.75rem;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --shadow-soft: 0 1px 0 rgb(17 41 28 / 0.04), 0 18px 40px -18px rgb(17 41 28 / 0.22);
+  --shadow-lift: 0 30px 60px -30px rgb(17 41 28 / 0.35);
+
+  /* z-index scale */
+  --z-content: 10;
+  --z-header: 40;
+  --z-overlay: 50;
+}
+
+@theme inline {
+  --color-ground: var(--ground);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted-ink: var(--muted-ink);
+  --color-line: var(--line);
+  --color-green: var(--green);
+  --color-green-deep: var(--green-deep);
+  --color-green-soft: var(--green-soft);
+  --color-sun: var(--sun);
+  --color-tint-musami: var(--tint-musami);
+  --color-tint-pomegranate: var(--tint-pomegranate);
+  --color-tint-mighty: var(--tint-mighty);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Bricolage Grotesque for display, Geist for reading text. */
+  --font-display: var(--font-bricolage), "Helvetica Neue", sans-serif;
+  --font-sans: var(--font-geist), system-ui, sans-serif;
+  --font-heading: var(--font-bricolage), sans-serif;
+
+  --radius-sm: 0.875rem;
+  --radius-md: 1.25rem;
+  --radius-lg: var(--radius);
+  --radius-xl: 2rem;
+  --radius-2xl: 2.5rem;
+
+  --shadow-soft: var(--shadow-soft);
+  --shadow-lift: var(--shadow-lift);
+  --ease-out-expo: var(--ease-out-expo);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/60;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    scroll-padding-top: 6rem;
+  }
+  a,
+  button,
+  label,
+  summary,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: var(--green);
+    color: var(--surface);
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 88rem;
+    margin-inline: auto;
+    padding-inline: clamp(1rem, 4vw, 3rem);
+  }
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    white-space: nowrap;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    line-height: 1;
+    min-height: 3rem;
+    padding: 0 1.4rem;
+    transition:
+      background-color 0.25s var(--ease-out-expo),
+      color 0.25s var(--ease-out-expo),
+      border-color 0.25s,
+      scale 0.15s var(--ease-out-expo);
+  }
+  .btn:active {
+    scale: 0.97;
+  }
+  .btn-primary {
+    background: var(--green);
+    color: var(--surface);
+  }
+  .btn-primary:hover {
+    background: var(--green-deep);
+  }
+  .btn-ghost {
+    border: 1px solid color-mix(in oklab, var(--ink) 22%, transparent);
+    color: var(--ink);
+    background: color-mix(in oklab, var(--surface) 55%, transparent);
+  }
+  .btn-ghost:hover {
+    border-color: var(--ink);
+    background: var(--surface);
+  }
+  .btn-ink {
+    background: var(--ink);
+    color: var(--surface);
+  }
+  .btn-ink:hover {
+    background: var(--green-deep);
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .icon-btn {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    transition: background-color 0.2s;
+  }
+  .icon-btn:hover {
+    background: color-mix(in oklab, var(--ink) 7%, transparent);
+  }
+  .link-underline {
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+    transition: background-size 0.35s var(--ease-out-expo);
+    padding-bottom: 2px;
+  }
+  .link-underline:hover,
+  .link-underline:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* Form fields: errors appear only after interaction (:user-invalid). */
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    border: 1px solid var(--input);
+    border-radius: 14px;
+    background: var(--surface);
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+    color: var(--ink);
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
+  }
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: #66776b;
+  }
+  .field input:focus-visible,
+  .field select:focus-visible,
+  .field textarea:focus-visible {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--green) 22%, transparent);
+  }
+  .field .field-error {
+    display: none;
+    color: var(--destructive);
+    font-size: 0.875rem;
+  }
+  .field :is(input, select, textarea):user-invalid {
+    border-color: var(--destructive);
+    background: #fdf1ef;
+  }
+  .field:has(:is(input, select, textarea):user-invalid) .field-error {
+    display: block;
+  }
+}
+
+/* One marquee on the whole site: the seasonal posters strip. */
+@keyframes marquee {
+  to {
+    translate: -50% 0;
+  }
+}
+.marquee-track {
+  animation: marquee 60s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track,
+.marquee[data-paused] .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Leaflet pins */
+.hng-pin {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--surface);
+  border-radius: 50% 50% 50% 0;
+  rotate: -45deg;
+  background: var(--ink);
+  box-shadow: 0 6px 14px rgb(17 41 28 / 0.3);
+  transition:
+    background 0.2s,
+    scale 0.2s;
+}
+.hng-pin span {
+  rotate: 45deg;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--surface);
+}
+.hng-pin.is-active {
+  background: var(--green);
+  scale: 1.2;
+}
+.hng-map .leaflet-container {
+  font-family: var(--font-sans);
+  background: var(--muted);
+}
+.hng-map .leaflet-tile-pane {
+  filter: saturate(0.55) hue-rotate(-8deg) brightness(1.03);
+}
+
+[data-slot="dialog-content"],
+[data-slot="sheet-content"] {
+  overscroll-behavior: contain;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+  .btn:active {
+    scale: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Drifting bokeh in the studio backdrops */
+@keyframes bokeh-drift {
+  0%,
+  100% {
+    translate: 0 0;
+    opacity: 0.28;
+  }
+  50% {
+    translate: 14px -22px;
+    opacity: 0.5;
+  }
+}
+.bokeh {
+  filter: blur(14px);
+  opacity: 0.4;
+  animation: bokeh-drift 12s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bokeh {
+    animation: none;
+  }
+}

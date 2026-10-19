@@ -1,0 +1,12 @@
+import type { Metadata } from "next";
+import { CheckoutView } from "@/components/cart/CheckoutView";
+
+export const metadata: Metadata = { title: "Checkout", robots: { index: false } };
+
+export default function CheckoutPage() {
+  return (
+    <div className="container-x pt-28 md:pt-36">
+      <CheckoutView />
+    </div>
+  );
+}
